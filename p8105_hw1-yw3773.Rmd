@@ -2,27 +2,63 @@
 title: "p8105_hw1_yw3773"
 output: github_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(tidyverse)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Problem 1
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+p1_df = tibble(
+  num_vec = rnorm(10),
+  logical_vec = num_vec > 0,
+  char_vec = c('This', 'is', 'my', 'homework', 'one', 'in', 'data', 'science','and', 'yeah'),
+  fac_vec = factor(c('high', 'median', 'low', 'high', 'high', 'low', 'low', 'median', 'median', 'high'))
+)
 
-```{r cars}
-summary(cars)
+head(p1_df)
 ```
 
-## Including Plots
+When I try to compute the mean, I can only get the mean of the numeric vector and the logical vector. The mean for the character vector and the factor vector shows NA with the error that argument is not numeric or logical: returning NA.
 
-You can also embed plots, for example:
+```{r}
+mean(pull(p1_df, num_vec))
+mean(pull(p1_df, logical_vec))
+mean(pull(p1_df, char_vec))
+mean(pull(p1_df,fac_vec))
+```
+When I try to convert the logical, character, and factor variables to numeric variable, the logical and factor variables can be successfully converted, but the character variable still shows NA. So the character variable cannot be converted to numeric variable and we can not take the mean of it. We can take the mean of logical variable, we can also take the mean of the factor variable of we converted it into numeric.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+as.numeric(pull(p1_df, logical_vec))
+as.numeric(pull(p1_df, char_vec))
+as.numeric(pull(p1_df, fac_vec))
+mean(as.numeric(pull(p1_df, fac_vec)))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Problem 2
+```{r,eval = FALSE}
+install.packages("palmerpenguins")
+```
+
+The penguins data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows. The variables contains 5 numeric variables and 3 factor variables. The 5 numeric variables are 'bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g' and 'year', the 3 factor variables are 'species', 'island' and 'sex'. The mean flipper length is `r mean(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm.
+
+```{r}
+data("penguins", package = "palmerpenguins")
+skimr::skim(penguins)
+
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point() + ggtitle("The flipper length vs. the bill length \n with respect to species")
+
+ggsave("scatter_plot.pdf", height = 6, width = 5)
+```
+
+
+
+
+
+
+
+
+
+
