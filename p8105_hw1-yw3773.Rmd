@@ -47,7 +47,8 @@ The penguins data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows
 
 ```{r, warning = FALSE}
 # make the plot
-ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point() + ggtitle("The flipper length vs. the bill length \n with respect to species")
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point() + 
+  ggtitle("The flipper length vs. the bill length \n with respect to species")
 
 ggsave("scatter_plot.pdf", height = 6, width = 5)
 ```
